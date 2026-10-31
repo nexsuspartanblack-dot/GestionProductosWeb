@@ -1,3 +1,4 @@
+
 package com.albertosena.gestionproductos;
 
 import jakarta.servlet.ServletException;
@@ -15,6 +16,8 @@ import java.sql.SQLException;
 
 @WebServlet("/registrar")
 public class RegistroServlet extends HttpServlet {
+
+    private static final int LONGITUD_MAXIMA_NOMBRE = 100;
 
     // Registra un repuesto en MySQL mediante POST.
     @Override
@@ -41,14 +44,38 @@ public class RegistroServlet extends HttpServlet {
 
         nombre = nombre.trim();
 
+        if (nombre.length() > LONGITUD_MAXIMA_NOMBRE) {
+            mostrarResultado(request, response,
+                    "Nombre demasiado largo",
+                    "El nombre del repuesto no puede superar los 100 caracteres.",
+                    false, "POST");
+            return;
+        }
+
         try {
             BigDecimal precio = new BigDecimal(precioTexto);
             int cantidad = Integer.parseInt(cantidadTexto);
 
-            if (precio.compareTo(BigDecimal.ZERO) <= 0 || cantidad < 0) {
+            if (precio.compareTo(BigDecimal.ZERO) <= 0) {
                 mostrarResultado(request, response,
-                        "Datos inválidos",
-                        "El precio debe ser mayor que cero y la cantidad no puede ser negativa.",
+                        "Precio inválido",
+                        "El precio debe ser mayor que cero.",
+                        false, "POST");
+                return;
+            }
+
+            if (precio.scale() > 2) {
+                mostrarResultado(request, response,
+                        "Formato de precio inválido",
+                        "El precio no puede tener más de dos decimales.",
+                        false, "POST");
+                return;
+            }
+
+            if (cantidad < 0) {
+                mostrarResultado(request, response,
+                        "Cantidad inválida",
+                        "La cantidad disponible no puede ser negativa.",
                         false, "POST");
                 return;
             }
@@ -74,21 +101,21 @@ public class RegistroServlet extends HttpServlet {
 
         } catch (NumberFormatException e) {
 
-            request.setAttribute("titulo", "Datos inválidos");
-            request.setAttribute("nombre", nombre);
-            request.setAttribute("precio",
-                    "Verifica el formato del precio y la cantidad.");
-            request.setAttribute("encontrado", false);
+            mostrarResultado(request, response,
+                    "Formato de datos inválido",
+                    "Verifica que el precio sea numérico y la cantidad sea un número entero.",
+                    false, "POST");
+            return;
 
         } catch (SQLException e) {
 
             getServletContext().log("Error al registrar el repuesto", e);
 
-            request.setAttribute("titulo", "Error al registrar");
-            request.setAttribute("nombre", nombre);
-            request.setAttribute("precio",
-                    "No fue posible guardar el repuesto en la base de datos.");
-            request.setAttribute("encontrado", false);
+            mostrarResultado(request, response,
+                    "Error al registrar",
+                    "No fue posible guardar el repuesto en la base de datos.",
+                    false, "POST");
+            return;
         }
 
         request.setAttribute("metodo", "POST");
@@ -116,6 +143,14 @@ public class RegistroServlet extends HttpServlet {
         }
 
         nombre = nombre.trim();
+
+        if (nombre.length() > LONGITUD_MAXIMA_NOMBRE) {
+            mostrarResultado(request, response,
+                    "Nombre demasiado largo",
+                    "El nombre de búsqueda no puede superar los 100 caracteres.",
+                    false, "GET");
+            return;
+        }
 
         String sql = "SELECT nombre, precio, cantidad FROM productos "
                 + "WHERE LOWER(nombre) = LOWER(?) LIMIT 1";
@@ -150,11 +185,11 @@ public class RegistroServlet extends HttpServlet {
 
             getServletContext().log("Error al consultar el repuesto", e);
 
-            request.setAttribute("titulo", "Error en la consulta");
-            request.setAttribute("nombre", nombre);
-            request.setAttribute("precio",
-                    "No fue posible consultar la base de datos.");
-            request.setAttribute("encontrado", false);
+            mostrarResultado(request, response,
+                    "Error en la consulta",
+                    "No fue posible consultar la base de datos.",
+                    false, "GET");
+            return;
         }
 
         request.setAttribute("metodo", "GET");

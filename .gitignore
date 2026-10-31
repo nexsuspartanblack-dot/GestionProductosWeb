@@ -1,0 +1,13 @@
+# Archivos generados por Maven
+/target/
+
+# Archivos de configuración locales
+*.properties
+.env
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Configuración personal del IDE
+/nb-configuration.xml

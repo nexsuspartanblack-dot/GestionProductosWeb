@@ -1,0 +1,167 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Rolo's Motos Cars | Gestión de Repuestos</title>
+
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon">R</div>
+            <span>Rolo's Motos Cars</span>
+        </div>
+
+        <span class="nav-label">
+            Sistema de gestión de repuestos · ADSO
+        </span>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <span class="eyebrow">Panel de operaciones</span>
+
+            <h1>Gestión de repuestos para motocicletas</h1>
+
+            <p class="subtitle">
+                Bienvenido al sistema de Rolo's Motos Cars.
+                Registra y consulta repuestos y accesorios para motocicletas.
+                Selecciona una operación para comenzar.
+            </p>
+        </section>
+
+        <section class="cards">
+
+            <!-- REGISTRO DE REPUESTOS MEDIANTE POST -->
+            <article class="card">
+
+                <div class="card-icon">＋</div>
+
+                <span class="method">MÉTODO POST</span>
+
+                <h2 style="margin-top: 16px">
+                    Registrar repuesto
+                </h2>
+
+                <p class="card-description">
+                    Registra un repuesto o accesorio en el sistema,
+                    indicando su nombre, precio y cantidad disponible.
+                </p>
+
+                <form action="registrar" method="post">
+
+                    <label for="nombre">
+                        Nombre del repuesto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        placeholder="Ej. Espejo retrovisor"
+                        maxlength="100"
+                        required
+                    >
+
+                    <label for="precio">
+                        Precio (COP)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="precio"
+                        name="precio"
+                        placeholder="Ej. 45000"
+                        min="0.01"
+                        step="0.01"
+                        required
+                    >
+
+                    <!-- NUEVO CAMPO: CANTIDAD DISPONIBLE -->
+                    <label for="cantidad">
+                        Cantidad disponible
+                    </label>
+
+                    <input
+                        type="number"
+                        id="cantidad"
+                        name="cantidad"
+                        placeholder="Ej. 12"
+                        min="0"
+                        step="1"
+                        required
+                    >
+
+                    <button type="submit">
+                        Registrar repuesto →
+                    </button>
+
+                </form>
+            </article>
+
+            <!-- CONSULTA DE REPUESTOS MEDIANTE GET -->
+            <article class="card">
+
+                <div class="card-icon green">⌕</div>
+
+                <span class="method get">MÉTODO GET</span>
+
+                <h2 style="margin-top: 16px">
+                    Consultar repuesto
+                </h2>
+
+                <p class="card-description">
+                    Busca un repuesto por su nombre y verifica
+                    si se encuentra registrado en el sistema.
+                </p>
+
+                <form action="registrar" method="get">
+
+                    <label for="consulta">
+                        Nombre del repuesto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="consulta"
+                        name="nombre"
+                        placeholder="Ej. Kit de arrastre"
+                        maxlength="100"
+                        required
+                    >
+
+                    <button type="submit" class="green-button">
+                        Consultar repuesto →
+                    </button>
+
+                </form>
+            </article>
+
+        </section>
+
+        <aside class="info-strip">
+            <span style="font-size: 22px">ⓘ</span>
+
+            <span>
+                <strong>Información del sistema.</strong>
+                Esta aplicación permite registrar y consultar
+                repuestos utilizando servlets Java y páginas JSP,
+                con almacenamiento de información en una base de datos MySQL.
+            </span>
+        </aside>
+
+    </main>
+
+    <footer class="footer">
+        Rolo's Motos Cars · ADSO · Análisis y Desarrollo de Software
+    </footer>
+
+</body>
+</html>
+```
